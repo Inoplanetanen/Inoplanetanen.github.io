@@ -21,7 +21,7 @@ import getpass
 from time import sleep
 #import ctypes
 #user32 = ctypes.windll.user32
-versi = '2.1'
+versi = '2.2'
 
 USER_NAME = getpass.getuser()
 def add_to_startup(file_path=""):
