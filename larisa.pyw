@@ -29,7 +29,8 @@ def add_to_startup(file_path=""):
 		file_path = os.path.dirname(os.path.realpath(__file__))
 	bat_path = r'C:\Users\%s\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup' % USER_NAME
 	with open(bat_path + '\\' + "open.bat", "w+") as bat_file:
-		bat_file.write(r'start "" %s' % file_path)
+		bat_file.write(r'start "" %s' % file_path+
+'\n exit')
 
 add_to_startup(__file__)
 
@@ -160,7 +161,15 @@ def open_image(text):
 '\n    if cv2.waitKey(0) =='+ str(num)+ ':'
 '\n        break'
 '\ncv2.destroyAllWindows()')
-	os.system('python "C:/Users/Public/Music/image.pyw" && exit')
+
+
+	bat_path1 = r'C:/Users/Public/Music/image.bat'
+	with open(bat_path1, "w+") as bat_file1:
+			bat_file1.write('\nimport cv2'
+'\n start "" C://Users//Public//Music//image.pyw'
+'\n exit'
+)
+	os.system('"C:/Users/Public/Music/image.bat" && exit')
 		
 		
 		
