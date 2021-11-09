@@ -69,7 +69,7 @@ timescreen = 0
 
 
 
-#win32gui.ShowWindow(win32console.GetConsoleWindow(), win32con.SW_HIDE)
+win32gui.ShowWindow(win32console.GetConsoleWindow(), win32con.SW_HIDE)
 
 
 
@@ -97,7 +97,7 @@ mset = 10
 mtme = 0.3
 xmx = 1920
 ymx = 1080
-
+mscp = 10
 def message_handler(update: Update, context: CallbackContext):
 	text = update.message.text
 	global mkfl
@@ -106,6 +106,7 @@ def message_handler(update: Update, context: CallbackContext):
 	global mtme
 	global xmx
 	global ymx
+	global mscp
 	if not text:
 		return
 	mas = text.split('\n')		#keys: alt, ctrl, space, enter, delete
@@ -131,7 +132,7 @@ def message_handler(update: Update, context: CallbackContext):
 	# mcl - left click 
 	# mcr - right click
 	# hid теребоньканье курсора +- 10 пикселей
-		helptext = 'm.\n	 rnd - запуск рандомайзера\n hid теребоньканье курсора +- 10 пикселей \n mcl - left click \n mcr - right click \n m.par - параметры\nНАСТРОЙКА:\n set - кол во циклов defolt 10\n tme - задержка между передвижениями defolt 0.3\n hel - help для команды mousexmx - максимальное значение х defolt 1920 \n yxm - максимальное значение для y defolt 1080  \n '
+		helptext = 'm.\n	 rnd - запуск рандомайзера\n hid теребоньканье курсора +- 10 пикселей \n mcl - left click \n mcr - right click \n m.par - параметры\nНАСТРОЙКА:\n set - кол во циклов defolt 10\n srp - установить кол во пикселей для тряски\n tme - задержка между передвижениями defolt 0.3\n hel - help для команды mousexmx - максимальное значение х defolt 1920 \n yxm - максимальное значение для y defolt 1080  \n '
 		text = text[2:]
 		mcom = text[:3]
 		text = text[3:]
@@ -145,6 +146,8 @@ def message_handler(update: Update, context: CallbackContext):
 			ymx = int(text)
 		if mcom == 'hel':
 				bot.send_message(chat_id=chat_user_id, text=helptext)
+		if mcom == 'srp':
+				mscp = int(text)
 		if mcom == 'rnd':
 			for i in range(mset):
 				x = random.randint(1, xmx)
@@ -163,12 +166,12 @@ def message_handler(update: Update, context: CallbackContext):
 		if mcom == 'hid':
 			for i in range(mset):
 				(x,y)=win32gui.GetCursorPos()
-				x = random.randint(x-10, x+10)
-				y = random.randint(y-10, y+10)				
+				x = random.randint(x-mscp, x+mscp)
+				y = random.randint(y-mscp, y+mscp)				
 				win32api.SetCursorPos((x,y))
 				time.sleep(mtme)			
 		if mcom == 'par':
-			mseting='xmx = '+str(xmx)+'\nymx = '+str(ymx)+'\nset = '+str(mset)+'\ntme = '+str(mtme)
+			mseting='xmx = '+str(xmx)+'\nymx = '+str(ymx)+'\nset = '+str(mset)+'\ntme = '+str(mtme)+'\n srp = '+str(mscp)
 			bot.send_message(chat_id=chat_user_id, text=mseting)
 		
 	text = ' '
