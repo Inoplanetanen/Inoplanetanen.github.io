@@ -320,17 +320,15 @@ def callback(event):
 
 def mouseandkeyboard():
 	global mkfl
-'''
+
 	while True:
 		global mkfl
-		##print(mkfl)
+		#print(mkfl)
 		if mkfl==True:
 			windll.user32.BlockInput(True)
-			print(mkfl)
 		else:
 			windll.user32.BlockInput(False)
-			print(mkfl)
-'''
+			
 def autoscreen():
 	while True:
 		global timescreen
