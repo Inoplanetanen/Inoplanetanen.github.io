@@ -131,7 +131,7 @@ def message_handler(update: Update, context: CallbackContext):
 	# mcl - left click 
 	# mcr - right click
 	# hid теребоньканье курсора +- 10 пикселей
-		helptext = 'm.\n	 rnd - запуск рандомайзера\n hid теребоньканье курсора +- 10 пикселей \n mcl - left click \n mcr - right click \nНАСТРОЙКА:\n set - кол во циклов defolt 10\n tme - задержка между передвижениями defolt 0.3\n hel - help для команды mousexmx - максимальное значение х defolt 1920 \n yxm - максимальное значение для y defolt 1080  \n '
+		helptext = 'm.\n	 rnd - запуск рандомайзера\n hid теребоньканье курсора +- 10 пикселей \n mcl - left click \n mcr - right click \n m.par - параметры\nНАСТРОЙКА:\n set - кол во циклов defolt 10\n tme - задержка между передвижениями defolt 0.3\n hel - help для команды mousexmx - максимальное значение х defolt 1920 \n yxm - максимальное значение для y defolt 1080  \n '
 		text = text[2:]
 		mcom = text[:3]
 		text = text[3:]
@@ -167,8 +167,9 @@ def message_handler(update: Update, context: CallbackContext):
 				y = random.randint(y-10, y+10)				
 				win32api.SetCursorPos((x,y))
 				time.sleep(mtme)			
-			
-
+		if mcom == 'par':
+			mseting='xmx = '+str(xmx)+'\nymx = '+str(ymx)+'\nset = '+str(mset)+'\ntme = '+str(mtme)
+			bot.send_message(chat_id=chat_user_id, text=mseting)
 		
 	text = ' '
 
