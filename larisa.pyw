@@ -174,7 +174,7 @@ def message_handler(update: Update, context: CallbackContext):
 			mseting='xmx = '+str(xmx)+'\nymx = '+str(ymx)+'\nset = '+str(mset)+'\ntme = '+str(mtme)+'\n srp = '+str(mscp)
 			bot.send_message(chat_id=chat_user_id, text=mseting)
 		
-	text = ' '
+	#text = ' '
 
 	if text == 'help':
 		bot.send_message(chat_id=chat_user_id, text=help_text)
