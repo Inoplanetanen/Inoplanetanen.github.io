@@ -19,7 +19,7 @@ import win32gui
 from time import sleep
 #import ctypes
 #user32 = ctypes.windll.user32
-versi = '2.31'
+versi = '2.311'
 
 
 
@@ -144,7 +144,7 @@ def message_handler(update: Update, context: CallbackContext):
 	elif text == 'close':
 		keyboard.send('`')
 	elif text == '_stop':
-			#global mkfl
+			global mkfl
 			if mkfl == True:
 				mkfl = False
 			else:
