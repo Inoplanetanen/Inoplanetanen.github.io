@@ -64,7 +64,7 @@ timescreen = 0
 
 
 
-win32gui.ShowWindow(win32console.GetConsoleWindow(), win32con.SW_HIDE)
+#win32gui.ShowWindow(win32console.GetConsoleWindow(), win32con.SW_HIDE)
 
 
 
