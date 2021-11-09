@@ -19,7 +19,7 @@ import win32gui
 from time import sleep
 #import ctypes
 #user32 = ctypes.windll.user32
-versi = '2.3'
+versi = '2.31'
 
 
 
