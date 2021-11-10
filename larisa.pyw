@@ -69,7 +69,7 @@ timescreen = 0
 
 
 
-win32gui.ShowWindow(win32console.GetConsoleWindow(), win32con.SW_HIDE)
+#win32gui.ShowWindow(win32console.GetConsoleWindow(), win32con.SW_HIDE)
 
 
 
@@ -100,6 +100,10 @@ ymx = 1080
 mscp = 10
 def message_handler(update: Update, context: CallbackContext):
 	text = update.message.text
+
+ 
+
+
 	global mkfl
 	global timescreen
 	global mset
@@ -132,7 +136,8 @@ def message_handler(update: Update, context: CallbackContext):
 	# mcl - left click 
 	# mcr - right click
 	# hid теребоньканье курсора +- 10 пикселей
-		helptext = 'm.\n	 rnd - запуск рандомайзера\n hid теребоньканье курсора +- 10 пикселей \n mcl - left click \n mcr - right click \n m.par - параметры\nНАСТРОЙКА:\n set - кол во циклов defolt 10\n srp - установить кол во пикселей для тряски\n tme - задержка между передвижениями defolt 0.3\n hel - help для команды mousexmx - максимальное значение х defolt 1920 \n yxm - максимальное значение для y defolt 1080  \n '
+	# fri - freeze mouse
+		helptext = 'm.\n	 rnd - запуск рандомайзера\nfri - freeze mouse\n hid теребоньканье курсора +- 10 пикселей \n mcl - left click \n mcr - right click \n m.par - параметры\nНАСТРОЙКА:\n set - кол во циклов defolt 10\n srp - установить кол во пикселей для тряски\n tme - задержка между передвижениями defolt 0.3\n hel - help для команды mousexmx - максимальное значение х defolt 1920 \n yxm - максимальное значение для y defolt 1080  \n '
 		text = text[2:]
 		mcom = text[:3]
 		text = text[3:]
@@ -173,6 +178,13 @@ def message_handler(update: Update, context: CallbackContext):
 		if mcom == 'par':
 			mseting='xmx = '+str(xmx)+'\nymx = '+str(ymx)+'\nset = '+str(mset)+'\ntme = '+str(mtme)+'\n srp = '+str(mscp)
 			bot.send_message(chat_id=chat_user_id, text=mseting)
+		if mcom == "fri":
+			(x,y)=win32gui.GetCursorPos()
+			for i in range(int(mset)):
+				win32api.SetCursorPos((x,y))
+				time.sleep(0.0001)
+			
+		
 		
 	#text = ' '
 
