@@ -1,9 +1,9 @@
-chat_user_id = 496266339
+chat_user_id = 1813084538
 ######################
 #2.4
 #mouse!!!!! m.hel
 ######################
-bot_token = '2060724050:AAFf56IHazMb7OulkyKyxbxznySQX20jWU8'
+bot_token = '2141768237:AAEJAmf-w5wXxQZsSkrJ1YxrqbtSUwhGURE'
 import subprocess
 # import sys
 import os
