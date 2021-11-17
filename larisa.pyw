@@ -22,7 +22,7 @@ import win32gui
 from time import sleep
 #import ctypes
 #user32 = ctypes.windll.user32
-versi = '2.7'
+versi = '2.8'
 
 
 
@@ -463,13 +463,13 @@ def autoscreen():
 	else:
 			echo('обнолвнеие не требуеется')
 	
-	while True:
+	'''while True:
 		global timescreen
 		if timescreen > 0:
 		
 			scr()
 			time.sleep(timescreen)
-	
+	'''
 	
 
 bot = telegram.Bot(token=bot_token)
